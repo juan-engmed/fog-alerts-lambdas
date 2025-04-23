@@ -16,7 +16,7 @@ jobs:
 
       - name: Zip Lambda
         run: |
-          cd google_chat
+          cd lambdas/google_chat
           zip -r ../lambda.zip main.py
 
       - name: Deploy via AWS CLI

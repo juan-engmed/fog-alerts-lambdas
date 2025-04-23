@@ -16,7 +16,7 @@ jobs:
 
       - name: Zip Lambda
         run: |
-          cd telegram
+          cd lambdas/telegram
           zip -r ../lambda.zip main.py
 
       - name: Deploy via AWS CLI

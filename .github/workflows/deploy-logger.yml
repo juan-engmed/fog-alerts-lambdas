@@ -16,7 +16,7 @@ jobs:
 
       - name: Zip Lambda
         run: |
-          cd logger
+          cd lambdas/logger
           zip -r ../lambda.zip main.py
 
       - name: Deploy via AWS CLI

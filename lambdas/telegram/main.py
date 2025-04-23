@@ -5,7 +5,7 @@ import urllib.request
 
 def lambda_handler(event, context):
     # Nome do secret vindo da variável de ambiente
-    secret_name = os.environ["GOOGLECHAT_SECRET_NAME"]
+    secret_name = os.environ["TELEGRAM_SECRET_NAME"]
     
     # Acessa o Secrets Manager
     sm = boto3.client("secretsmanager")

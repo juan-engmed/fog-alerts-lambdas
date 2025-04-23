@@ -21,5 +21,5 @@ def lambda_handler(event, context):
         with urllib.request.urlopen(req) as resp:
             return { "statusCode": resp.status }
     except Exception as e:
-        print(f"Erro ao enviar alerta para Google Chat: {e}")
+        print(f"Erro ao enviar alerta para Google Chat!: {e}")
         return { "statusCode": 500 }

@@ -28,3 +28,7 @@ jobs:
           aws lambda update-function-code \
             --function-name fog-alerts-googlechat \
             --zip-file fileb://lambda.zip
+      
+      - name: Log commit info
+        run: echo "Deploying commit $GITHUB_SHA by $GITHUB_ACTOR"
+

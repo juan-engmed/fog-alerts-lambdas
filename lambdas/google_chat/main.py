@@ -22,4 +22,4 @@ def lambda_handler(event, context):
             return { "statusCode": resp.status }
     except Exception as e:
         print(f"Erro ao enviar alerta para Google Chat: {e}")
-        return { "statusCode": 500 }
+        return { "statusCode ": 500 }

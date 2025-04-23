@@ -28,4 +28,4 @@ def lambda_handler(event, context):
             return {"statusCode": status}
     except Exception as e:
         print(f"Erro ao enviar alerta: {e}")
-        return {"statusCode": 500}
+        return {"statusCode ": 500}

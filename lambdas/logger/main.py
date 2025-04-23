@@ -29,4 +29,4 @@ def lambda_handler(event, context):
             print(f"[✘] Error processing message: {e}")
             raise e
 
-    return {"statusCode": 200}
+    return {"statusCode ": 200}

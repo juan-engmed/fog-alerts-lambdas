@@ -1,0 +1,30 @@
+name: Deploy Lambda Telegram
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'logger/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Zip Lambda
+        run: |
+          cd telegram
+          zip -r ../lambda.zip main.py
+
+      - name: Deploy via AWS CLI
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+        run: |
+          aws lambda update-function-code \
+            --function-name fog-alerts-telegram \
+            --zip-file fileb://lambda.zip

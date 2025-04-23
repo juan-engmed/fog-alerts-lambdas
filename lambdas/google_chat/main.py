@@ -4,15 +4,24 @@ import json
 import urllib.request
 
 def lambda_handler(event, context):
+    # Nome do secret vindo da variável de ambiente
     secret_name = os.environ["GOOGLECHAT_SECRET_NAME"]
+    
+    # Acessa o Secrets Manager
     sm = boto3.client("secretsmanager")
-    webhook = sm.get_secret_value(SecretId=secret_name)["SecretString"]
+    secret_raw = sm.get_secret_value(SecretId=secret_name)["SecretString"]
+    secret = json.loads(secret_raw)
 
-    payload = { "text": "⚠️ Google Chat alerta recebido com sucesso!" }
+    # Pega o webhook do Google Chat
+    webhook_url = secret["GOOGLECHAT_WEBHOOK"]
+    message = {
+        "text": "🚨 Alerta recebido via Google Chat!"
+    }
 
+    # Envia o POST
     req = urllib.request.Request(
-        webhook,
-        data=json.dumps(payload).encode("utf-8"),
+        webhook_url,
+        data=json.dumps(message).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST"
     )

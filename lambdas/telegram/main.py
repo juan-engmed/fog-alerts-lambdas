@@ -4,20 +4,30 @@ import json
 import urllib.request
 
 def lambda_handler(event, context):
-    # Buscar segredo do webhook
-    secret_name = os.environ["TELEGRAM_SECRET_NAME"]
+    # Nome do secret vindo da variável de ambiente
+    secret_name = os.environ["GOOGLECHAT_SECRET_NAME"]
+    
+    # Acessa o Secrets Manager
     sm = boto3.client("secretsmanager")
-    webhook_url = sm.get_secret_value(SecretId=secret_name)["SecretString"]
+    secret_raw = sm.get_secret_value(SecretId=secret_name)["SecretString"]
+    secret = json.loads(secret_raw)
 
-    # Criar mensagem
-    message = {
-        "text": "🚨 Alerta crítico gerado via Lambda!"
+    # Extrai os dados do Telegram
+    token = secret["TELEGRAM_TOKEN"]
+    chat_id = secret["TELEGRAM_CHAT_ID"]
+    message = "🚨 Alerta recebido!"
+
+    # Monta a URL do Telegram
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": message
     }
 
-    # Enviar POST com urllib
+    # Envia o POST
     req = urllib.request.Request(
-        webhook_url,
-        data=json.dumps(message).encode("utf-8"),
+        url,
+        data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST"
     )

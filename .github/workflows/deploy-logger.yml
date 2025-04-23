@@ -11,23 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Zip Lambda
-        run: |
-          cd lambdas/logger
-          zip -r ../lambda.zip main.py
+      - name: Criar pacote ZIP da função Lambda
+        run: zip -j lambda.zip lambdas/logger/main.py
 
-      - name: Deploy via AWS CLI
+      - name: Deploy para AWS Lambda
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
         run: |
+          ls -lh
           aws lambda update-function-code \
             --function-name fog-alerts-logger \
             --zip-file fileb://lambda.zip
-      
-      - name: Log commit info
-        run: echo "Deploying commit $GITHUB_SHA by $GITHUB_ACTOR"
+
+      - name: Log de commit
+        run: echo "✅ Deploy do commit $GITHUB_SHA feito por $GITHUB_ACTOR"
